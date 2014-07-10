@@ -32,3 +32,5 @@ node_modules
 public/dist
 todo.txt
 app/lib/internal-files.js
+login-with-facebook.png
+public/images

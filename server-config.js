@@ -43,7 +43,7 @@ app.get('/auth/facebook/callback',
   });
 
 
-app.get('/', ensureAuthenticated, handler.renderIndex);
+app.get('/',  handler.renderIndex);
 app.get('/create', ensureAuthenticated, handler.renderIndex);
 
 app.get('/links', ensureAuthenticated, handler.fetchLinks);
