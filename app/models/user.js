@@ -3,8 +3,8 @@ var Promise = require('bluebird');
 
 var User = db.Model.extend({
   tableName: 'users',
-  hasTimestamps: true,
-  idAttribute: fb_id
+  hasTimestamps: true
 });
+
 
 module.exports = User;

@@ -1,0 +1,2 @@
+CREATE TABLE "users" ("id" integer primary key autoincrement not null, "username" varchar(100), "password" varchar(100), "created_at" datetime, "updated_at" datetime);
+CREATE UNIQUE INDEX users_username_unique on "users" ("username");
