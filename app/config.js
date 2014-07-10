@@ -29,10 +29,15 @@ db.knex.schema.hasTable('urls').then(function(exists) {
   }
 });
 
+// http://knexjs.org/#Schema-createTable
+// go to createTable, chainable methods
+// Type of user id is string. Specified at
+// https://developers.facebook.com/docs/graph-api/reference/v2.0/user
+
 db.knex.schema.hasTable('users').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('users', function (user) {
-      user.increments('id').primary();
+      user.string('fb_id', 100).primary();
       user.string('username', 100).unique();
       user.timestamps();
     }).then(function (table) {
