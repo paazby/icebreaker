@@ -6,8 +6,8 @@ var db = Bookshelf.initialize({
   connection: {
     host: process.env.IP || '127.0.0.1',
     user: 'your_database_user',
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD || 'password',
+    database: process.env.DB_NAME || 'shortlydb',
     charset: 'utf8',
     filename: path.join(__dirname, '../db/shortly.sqlite')
   }
@@ -34,7 +34,6 @@ db.knex.schema.hasTable('users').then(function(exists) {
     db.knex.schema.createTable('users', function (user) {
       user.increments('id').primary();
       user.string('username', 100).unique();
-      user.string('password', 100);
       user.timestamps();
     }).then(function (table) {
       console.log('Created Table', table);
