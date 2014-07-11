@@ -3,9 +3,9 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('icebreaker', ['ionic'])
+var app = angular.module('icebreaker', ['ionic']);
 
-.run(function($ionicPlatform) {
+app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,17 +19,31 @@ angular.module('icebreaker', ['ionic'])
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
+
+  $urlRouterProvider.otherwise("/sign-in");
+
   $stateProvider
     .state('signin', {
       url: '/sign-in',
       templateUrl: '../templates/sign-in.html',
       controller: 'SignInCtrl'
     })
-})
 
-.controller('SignInCtrl', function($scope, $state) {
-  $scope.signIn = function(user) {
-    console.log('Sign-In', user);
-    $state.go('tabs.home');
-  }
+    .state('tab', {
+      url: '/tab',
+      abstract: true,
+      templateUrl: "templates/tabs.html"
+    })
+
+    .state('tab.events', {
+      url: '/events',
+      views: {
+        'tab-events': {
+          templateUrl: '../templates/events.html',
+          controller: 'EventsCtrl'
+        }
+      }
+    })
+
+
 })

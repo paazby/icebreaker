@@ -20,7 +20,7 @@ app.run(function($ionicPlatform) {
 
 .config(function($stateProvider, $urlRouterProvider) {
 
-  // $urlRouterProvider.otherwise("/signin");
+  $urlRouterProvider.otherwise("/sign-in");
 
   $stateProvider
     .state('signin', {
@@ -36,8 +36,14 @@ app.run(function($ionicPlatform) {
     })
 
     .state('tab.events', {
-      url: '/tab/events',
-      templateUrl: '../templates/events.html',
-      controller: 'EventsCtrl'
+      url: '/events',
+      views: {
+        'tab-events': {
+          templateUrl: '../templates/events.html',
+          controller: 'EventsCtrl'
+        }
+      }
     })
+
+
 })
