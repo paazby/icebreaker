@@ -46,7 +46,7 @@ app.get('/auth/facebook/callback',
 
 
 app.get('/',  handler.renderIndex);
-app.get('/create', ensureAuthenticated, handler.renderIndex);
+app.get('/matches', ensureAuthenticated, handler.renderMatches);
 
 app.get('/links', ensureAuthenticated, handler.fetchLinks);
 app.post('/links', handler.saveLink);

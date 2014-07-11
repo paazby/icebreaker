@@ -34,3 +34,5 @@ todo.txt
 app/lib/internal-files.js
 login-with-facebook.png
 public/images
+public/client/bower_components
+public/client/platforms
