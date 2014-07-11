@@ -45,5 +45,15 @@ app.run(function($ionicPlatform) {
       }
     })
 
+    .state('tab.matches', {
+      url: '/matches',
+      views: {
+        'tab-matches': {
+          templateUrl: '../templates/matches.html',
+          controller: 'MatchesCtrl'
+        }
+      }
+    })
+
 
 })
