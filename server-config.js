@@ -12,10 +12,12 @@ app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(partials());
-  app.use(express.bodyParser());
   app.use(express.static(__dirname + '/public'));
   app.use(express.cookieParser('shhhh, very secret'));
-  app.use(express.session());
+  app.use(express.bodyParser());
+  app.use(express.session({secret: 'keyboard cat'}));
+  app.use(passport.initialize());
+  app.use(passport.session());
 });
 
 
@@ -44,7 +46,7 @@ app.get('/auth/facebook/callback',
 
 
 app.get('/',  handler.renderIndex);
-app.get('/create', ensureAuthenticated, handler.renderIndex);
+app.get('/matches', ensureAuthenticated, handler.renderMatches);
 
 app.get('/links', ensureAuthenticated, handler.fetchLinks);
 app.post('/links', handler.saveLink);
