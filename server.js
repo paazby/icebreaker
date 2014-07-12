@@ -1,18 +1,11 @@
 var express = require('express');
 var app = express();
 
-var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', config.allowedDomains);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-
-    next();
-};
-
+var cors = require('cors');
 app.configure(function() {
   app.use(express.static(__dirname + '/public'));
   app.use(express.cookieParser('shhhh, very secret'));
-  app.use(allowCrossDomain);
+  app.use(cors());
   app.use(express.bodyParser());
   app.use(express.session({secret: 'keyboard cat'}));
 });
