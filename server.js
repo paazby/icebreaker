@@ -10,7 +10,7 @@ app.configure(function() {
   app.use(express.session({secret: 'keyboard cat'}));
 });
 
-
+app.options('*', cors());
 
 app.get('/matches',  function(req,res){
   console.log('triggered');
