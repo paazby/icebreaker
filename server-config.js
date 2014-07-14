@@ -3,6 +3,7 @@ var partials = require('express-partials');
 var util = require('./lib/utility');
 var passport = require('./lib/auth').passport;
 var iceAuthenticated = require('./lib/icebreaker-auth').iceAuthenticated;
+var serverUtil = require ('./lib/server-utils.js');
 
 var handler = require('./lib/request-handler');
 
@@ -41,8 +42,8 @@ app.get('/auth/facebook/callback',
 
 
 app.get('/',  handler.renderIndex);
-app.get('/matches', ensureAuthenticated, handler.serveMatches);
-app.post('/matches', ensureAuthenticated, handler.postMatches);
+app.get('/matches', iceAuthenticated, handler.serveMatches);
+app.post('/matches', iceAuthenticated, handler.postMatches);
 
 
 app.get('/logout', handler.logoutUser);
@@ -50,7 +51,7 @@ app.get('/logout', handler.logoutUser);
 app.get('/signup', handler.signupUserForm);
 app.post('/signup', handler.signupUser);
 
-app.get('/*', handler.navToLink);
+app.get('/*', serverUtil.send404);
 
 
 

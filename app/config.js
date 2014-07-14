@@ -21,7 +21,7 @@ var db = Bookshelf.initialize({
 
 db.knex.schema.hasTable('matches').then(function(exists){
   if(!exists){
-    db.knew.schema.createTable('matches', function(match){
+    db.knex.schema.createTable('matches', function(match){
       match.increments('id').primary();
       match.string('user_0_id', 255);
       match.string('user_1_id', 255);
