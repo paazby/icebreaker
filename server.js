@@ -14,7 +14,6 @@ app.configure(function() {
   app.use(express.cookieParser('shhhh, very secret'));
   app.use(express.bodyParser());
   app.use(allowCrossDomain);
-  app.use(express.session({secret: 'keyboard cat'}));
 });
 
 
@@ -27,7 +26,7 @@ app.get('/matches',  function(req,res){
 });
 
 app.get('/',  function(req,res){
-  res.status(200).sendfile(process.cwd() + '/public/client/www/index.html');
+  res.status(200).sendfile(process.cwd() + '/public/client/static/index.html');
 });
 
 app.get('/events', function(req, res){
