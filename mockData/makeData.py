@@ -17,19 +17,22 @@ def makeUser(name, names):
   user['username'] = name
   user['matches'] = [];
   for i in range(randomNumberOfMatches):
-    randomMatch = random.randint(0, len(names))
+    randomMatch = random.randint(0, len(names)-1)
     user['matches'].append(names[randomMatch])
 
   return json.dumps(user)
 
 def createData():
+  data = {'results': []}
+  for i in range(1000):
+    names = readNames()
+    randomIndex = random.randint(0, len(names))
+    name = names[randomIndex];    
+    newUser = makeUser(name, names)
+    data['results'].append(newUser);
+
   with open("test.txt", "a") as myfile:
-    for i in range(1000):
-      names = readNames()
-      randomIndex = random.randint(0, len(names))
-      name = names[randomIndex];    
-      newUser = makeUser(name, names)
-      myfile.write(newUser + '\n')
+    myfile.write(json.dumps(data))
 
 
 createData()
