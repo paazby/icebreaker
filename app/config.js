@@ -46,6 +46,7 @@ db.knex.schema.hasTable('users').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('users', function (user) {
       user.string('fb_id', 100).primary();
+      user.string('access_token', 255);
       user.string('username', 100).unique();
       user.string('description', 143);
       user.boolean('is_male');
