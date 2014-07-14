@@ -1,8 +1,8 @@
 // NOTE: this file is not needed when using MongoDB
 var db = require('../config');
-var Link = require('../models/link');
+var Match = require('../models/match');
 
-var Links = new db.Collection();
+var Matches = new db.Collection();
 
 Links.model = Link;
 
