@@ -2,22 +2,18 @@ var express = require('express');
 var partials = require('express-partials');
 var util = require('./lib/utility');
 var passport = require('./lib/auth').passport;
-var ensureAuthenticated = require('./lib/auth').ensureAuthenticated;
+var iceAuthenticated = require('./lib/icebreaker-auth').iceAuthenticated;
+var serverUtil = require ('./lib/server-utils.js');
 
 var handler = require('./lib/request-handler');
 
 var app = express();
 
 app.configure(function() {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
   app.use(partials());
   app.use(express.static(__dirname + '/public'));
-  app.use(express.cookieParser('shhhh, very secret'));
   app.use(express.bodyParser());
-  app.use(express.session({secret: 'keyboard cat'}));
   app.use(passport.initialize());
-  app.use(passport.session());
 });
 
 
@@ -46,17 +42,16 @@ app.get('/auth/facebook/callback',
 
 
 app.get('/',  handler.renderIndex);
-app.get('/matches', ensureAuthenticated, handler.renderMatches);
+app.get('/matches', iceAuthenticated, handler.serveMatches);
+app.post('/matches', iceAuthenticated, handler.postMatches);
 
-app.get('/links', ensureAuthenticated, handler.fetchLinks);
-app.post('/links', handler.saveLink);
 
 app.get('/logout', handler.logoutUser);
 
 app.get('/signup', handler.signupUserForm);
 app.post('/signup', handler.signupUser);
 
-app.get('/*', handler.navToLink);
+app.get('/*', serverUtil.send404);
 
 
 
