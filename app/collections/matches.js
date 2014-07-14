@@ -4,6 +4,6 @@ var Match = require('../models/match');
 
 var Matches = new db.Collection();
 
-Links.model = Link;
+Matches.model = Match;
 
-module.exports = Links;
+module.exports = Matches;
