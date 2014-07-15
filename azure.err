@@ -1,14 +1,38 @@
-Sat Jul 05 2014 16:25:29 GMT-0700 (PDT):
-[Error: Application setting with key "DATABASE_PASSWORD" already exists]
-Error: Application setting with key "DATABASE_PASSWORD" already exists
-    at ___ (/Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/lib/commands/asm/site.appsetting._js:84:28)
-    at ___ (/Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/node_modules/streamline/lib/callbacks/runtime.js:85:13)
-    at /Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/lib/commands/asm/websites/websitesclient._js:542:14
-    at /Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/node_modules/azure/node_modules/azure-mgmt-website/lib/webSiteManagementClient.js:3177:16
-    at Parser.<anonymous> (/Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/node_modules/azure-common/node_modules/xml2js/lib/xml2js.js:246:20)
-    at Parser.EventEmitter.emit (events.js:95:17)
-    at Object.saxParser.onclosetag (/Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/node_modules/azure-common/node_modules/xml2js/lib/xml2js.js:225:24)
-    at emit (/Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/node_modules/azure-common/node_modules/xml2js/node_modules/sax/lib/sax.js:589:33)
-    at emitNode (/Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/node_modules/azure-common/node_modules/xml2js/node_modules/sax/lib/sax.js:594:3)
-    at closeTag (/Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/node_modules/azure-common/node_modules/xml2js/node_modules/sax/lib/sax.js:834:5)
-    at Object.write (/Users/HR10/.nvm/v0.10.25/lib/node_modules/azure-cli/node_modules/azure-common/node_modules/xml2js/node_modules/sax/lib/sax.js:1253:29)
+Tue Jul 15 2014 10:20:36 GMT-0700 (PDT):
+{ [Error]
+  stack: [Getter/Setter],
+  html: 
+   { '$': { xmlns: 'http://www.w3.org/1999/xhtml' },
+     head: 
+      { meta: [Object],
+        title: '401 - Unauthorized: Access is denied due to invalid credentials.',
+        style: [Object] },
+     body: { div: [Object] } },
+  statusCode: 401,
+  __frame: 
+   { name: 'doLogStream',
+     line: 251,
+     file: '/usr/local/lib/node_modules/azure-cli/lib/commands/asm/site.log._js',
+     prev: 
+      { name: '__2',
+        line: 82,
+        file: '/usr/local/lib/node_modules/azure-cli/lib/commands/asm/site.log._js',
+        prev: undefined,
+        active: false,
+        offset: 14,
+        col: 18 },
+     active: false,
+     offset: 8,
+     col: 11 },
+  rawStack: [Getter] }
+Error
+    at Function.ServiceClient._normalizeError (/usr/local/lib/node_modules/azure-cli/node_modules/azure-common/lib/services/serviceclient.js:785:23)
+    at ScmService.ServiceClient._processResponse (/usr/local/lib/node_modules/azure-cli/node_modules/azure-common/lib/services/serviceclient.js:450:41)
+    at processResponseCallback (/usr/local/lib/node_modules/azure-cli/node_modules/azure-common/lib/services/serviceclient.js:213:35)
+    at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/azure-cli/node_modules/azure-common/lib/services/serviceclient.js:242:17)
+    at IncomingMessage.emit (events.js:117:20)
+    at _stream_readable.js:929:16
+    at process._tickCallback (node.js:419:13)
+    at doLogStream (/usr/local/lib/node_modules/azure-cli/lib/commands/asm/site.log._js:259:11)
+    at __2 (/usr/local/lib/node_modules/azure-cli/lib/commands/asm/site.log._js:96:18)
+
