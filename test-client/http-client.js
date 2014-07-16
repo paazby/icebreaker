@@ -22,7 +22,7 @@ exports.makeRequest = function(message){
     console.log(keyAndToken);
 
     var options = { 
-      host:'localhost', 
+      host:'http://138.91.244.46', 
       port:4568, 
       path: '/matches' + keyAndToken, 
       method:'GET'
