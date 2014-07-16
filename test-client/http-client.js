@@ -9,11 +9,11 @@ exports.makeRequest = function(message){
     var qs = require('querystring');
 
     var fbWebToken = jwt.encode({
-      fb_token: FAKE_FB_TOKEN
+      fbToken: FAKE_FB_TOKEN
       }, JWT_SECRET);
     
     var apiWebToken = jwt.encode({
-      api_key: API_KEY 
+      apiKey: API_KEY 
     }, JWT_SECRET);
 
     var keyAndToken = qs.stringify({
@@ -32,18 +32,15 @@ exports.makeRequest = function(message){
     var testUrl = url.format(options);
     console.log('testUrl', testUrl);    
 
-    var request = request(testUrl, function(response){ 
+    request(testUrl, function(response){ 
+      console.log(response);
       console.log(response.statusCode);
       response.on('data', function(data){ 
         console.log('data', data); 
       }); 
     }); 
 
-    request.on('error', function(e){
-      console.log('error', e);
-    });
-    request.write(message); 
-    request.end();
+  
 };
 
 exports.makeRequest('_notUsed');
