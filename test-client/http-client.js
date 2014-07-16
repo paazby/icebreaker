@@ -11,6 +11,7 @@ exports.makeRequest = function(message){
       fb_token: FAKE_FB_TOKEN
       }, JWT_SECRET);
     
+    console.log(JWT_SECRET);
     var apiWebToken = jwt.encode({
       api_key: API_KEY 
     }, JWT_SECRET);
