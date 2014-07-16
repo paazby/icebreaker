@@ -4,7 +4,8 @@ var FAKE_FB_TOKEN = require('../lib/internal-files').FAKE_FB_TOKEN;
 var jwt = require('jwt-simple');
 
 exports.makeRequest = function(message){ 
-    var http = require('http');
+    var request = require('request');
+    var url = require('url');
     var qs = require('querystring');
 
     var fbWebToken = jwt.encode({
@@ -19,23 +20,28 @@ exports.makeRequest = function(message){
       api_key: apiWebToken,
       token: fbWebToken
     });
-    console.log(keyAndToken);
 
     var options = { 
-      host:'localhost', 
-      port:4568, 
-      path: '/matches' + keyAndToken, 
+      protocol: 'http',
+      host:'138.91.244.46:4568', 
+      pathname: '/matches',
+      search: keyAndToken,
       method:'GET'
     };
-    // request takes 2 args
-    // @param0: options 
-    // @param1: a readable stream 
-    var request = http.request(options, function(response){ 
+
+    var testUrl = url.format(options);
+    console.log('testUrl', testUrl);    
+
+    var request = request(testUrl, function(response){ 
       console.log(response.statusCode);
       response.on('data', function(data){ 
-        console.log(data); 
+        console.log('data', data); 
       }); 
     }); 
+
+    request.on('error', function(e){
+      console.log('error', e);
+    });
     request.write(message); 
     request.end();
 };
