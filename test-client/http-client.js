@@ -11,7 +11,6 @@ exports.makeRequest = function(message){
       fb_token: FAKE_FB_TOKEN
       }, JWT_SECRET);
     
-    console.log(JWT_SECRET);
     var apiWebToken = jwt.encode({
       api_key: API_KEY 
     }, JWT_SECRET);
@@ -20,10 +19,9 @@ exports.makeRequest = function(message){
       api_key: apiWebToken,
       token: fbWebToken
     });
-    console.log(keyAndToken);
 
     var options = { 
-      host:'http://138.91.244.46', 
+      host:'138.91.244.46', 
       port:4568, 
       path: '/matches' + keyAndToken, 
       method:'GET'
@@ -37,6 +35,10 @@ exports.makeRequest = function(message){
         console.log(data); 
       }); 
     }); 
+
+    request.on('error', function(e){
+      console.log('error', e);
+    });
     request.write(message); 
     request.end();
 };
