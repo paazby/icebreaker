@@ -17,7 +17,7 @@ exports.makeRequest = function(message){
     }, JWT_SECRET);
 
     var keyAndToken = qs.stringify({
-      api_key: apiWebToken,
+      apiKey: apiWebToken,
       token: fbWebToken
     });
 
@@ -30,14 +30,15 @@ exports.makeRequest = function(message){
     };
 
     var testUrl = url.format(options);
-    console.log('testUrl', testUrl);    
-
-    request(testUrl, function(response){ 
-      console.log(response);
+    request(testUrl, function(error, response, body){ 
+      
       console.log(response.statusCode);
       response.on('data', function(data){ 
         console.log('data', data); 
       }); 
+      response.on('end', function(){
+        // more code here
+      })
     }); 
 
   
