@@ -26,6 +26,7 @@ app.get('/auth/facebook',
     // function will not be called.
 });
 
+// https://github.com/jaredhanson/passport-http-bearer ({session:false}) example
 app.get('/linden/passman/dustytoken', 
   passport.authenticate('facebook', { session: false, failureRedirect: '/' }),
   function(req, res) {
