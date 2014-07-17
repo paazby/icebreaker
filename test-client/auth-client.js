@@ -28,7 +28,7 @@ exports.makeRequest = function(message){
 
     var options = { 
       protocol: 'http',
-      host:'zavadil7.cloudapp.net', 
+      host:'138.91.244.46:4568', 
       pathname: '/matches',
       search: keyAndToken
     };
