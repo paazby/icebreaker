@@ -18,14 +18,6 @@ app.configure(function() {
 
 
 // Passport session setup.
-//   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session.  Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing.  However, since this example does not
-//   have a database of user records, the complete Facebook profile is serialized
-//   and deserialized.
-
-
 
 app.get('/auth/facebook',
   passport.authenticate('facebook'),
@@ -35,7 +27,7 @@ app.get('/auth/facebook',
 });
 
 app.get('/linden/passman/dustytoken', 
-  passport.authenticate('facebook', { failureRedirect: '/' }),
+  passport.authenticate('facebook', { session: false, failureRedirect: '/' }),
   function(req, res) {
     res.redirect('/');
   });
