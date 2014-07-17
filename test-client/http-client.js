@@ -4,9 +4,14 @@ var FAKE_FB_TOKEN = require('../lib/internal-files').FAKE_FB_TOKEN;
 var jwt = require('jwt-simple');
 
 exports.makeRequest = function(message){ 
+    
     var request = require('request');
     var url = require('url');
     var qs = require('querystring');
+    // Take a command line argument to either GET or POST from the 
+    // matches resource
+    var requestType = process.argv[2] === 'p' ? request.post : request.get;
+    
 
     var fbWebToken = jwt.encode({
       fbToken: FAKE_FB_TOKEN
@@ -25,12 +30,11 @@ exports.makeRequest = function(message){
       protocol: 'http',
       host:'138.91.244.46:4568', 
       pathname: '/matches',
-      search: keyAndToken,
-      method:'GET'
+      search: keyAndToken
     };
 
     var testUrl = url.format(options);
-    request(testUrl, function(error, response, body){ 
+    requestType(testUrl, function(error, response, body){ 
       
       console.log(response.statusCode);
       response.on('data', function(data){ 
