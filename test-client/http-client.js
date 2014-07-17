@@ -23,7 +23,7 @@ exports.makeRequest = function(message){
 
     var options = { 
       protocol: 'http',
-      host:'138.91.244.46:4568', 
+      host:'zavadil7.cloudapp.net', 
       pathname: '/matches',
       search: keyAndToken,
       method:'GET'
