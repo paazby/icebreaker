@@ -38,4 +38,4 @@ public/client/bower_components
 public/client/platforms
 azure.err
 lib/#*#
-lib/.#
+lib/.#*
