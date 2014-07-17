@@ -34,7 +34,7 @@ app.get('/auth/facebook',
     // function will not be called.
 });
 
-app.get('/auth/facebook/callback', 
+app.get('/linden/passman/dustytoken', 
   passport.authenticate('facebook', { failureRedirect: '/' }),
   function(req, res) {
     res.redirect('/');
