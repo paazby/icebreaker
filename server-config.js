@@ -4,6 +4,8 @@ var util = require('./lib/utility');
 var passport = require('./lib/auth').passport;
 var iceAuthenticated = require('./lib/icebreaker-auth').iceAuthenticated;
 var serverUtil = require ('./lib/server-utils.js');
+var jwt = require('jwt-simple');
+var JWT_SECRET = require('./lib/internal-files').JWT_SECRET;
 
 var handler = require('./lib/request-handler');
 
@@ -27,10 +29,11 @@ app.get('/auth/facebook',
 });
 
 // https://github.com/jaredhanson/passport-http-bearer ({session:false}) example
-app.get('/linden/passman/dustytoken', 
+app.get('/auth/facebook/callback', 
   passport.authenticate('facebook', { session: false, failureRedirect: '/' }),
   function(req, res) {
-    res.redirect('/');
+    var urlSuffix = makeUrlSuffix(req);
+    res.redirect('/linden/passman/dustytoken/'+urlSuffix);
   });
 
 
