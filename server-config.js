@@ -6,6 +6,7 @@ var iceAuthenticated = require('./lib/icebreaker-auth').iceAuthenticated;
 var serverUtil = require ('./lib/server-utils.js');
 var jwt = require('jwt-simple');
 var JWT_SECRET = require('./lib/internal-files').JWT_SECRET;
+var makeUrlSuffix = require('./lib/makeUrlSuffix');
 
 var handler = require('./lib/request-handler');
 
@@ -32,7 +33,7 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback', 
   passport.authenticate('facebook', { session: false, failureRedirect: '/' }),
   function(req, res) {
-    var urlSuffix = makeUrlSuffix(req);
+    var urlSuffix = makeUrlSuffix.makeUrlSuffix(req);
     res.redirect('/linden/passman/dustytoken/'+urlSuffix);
   });
 
