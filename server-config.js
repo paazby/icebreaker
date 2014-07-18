@@ -42,12 +42,6 @@ app.get('/',  handler.renderIndex);
 app.get('/matches', iceAuthenticated, handler.serveMatches);
 app.post('/matches', iceAuthenticated, handler.postMatches);
 
-
-app.get('/logout', handler.logoutUser);
-
-app.get('/signup', handler.signupUserForm);
-app.post('/signup', handler.signupUser);
-
 app.get('/*', serverUtil.send404);
 
 
