@@ -40,3 +40,4 @@ azure.err
 lib/#*#
 lib/.#*
 *~
+db/.#*
