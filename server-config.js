@@ -39,8 +39,11 @@ app.get('/auth/facebook/callback',
 
 
 app.get('/',  handler.renderIndex);
+app.get('/allcandidates', handle.serveCandidates);
 app.get('/matches', iceAuthenticated, handler.serveMatches);
 app.post('/matches', iceAuthenticated, handler.postMatches);
+
+
 
 app.get('/*', serverUtil.send404);
 
