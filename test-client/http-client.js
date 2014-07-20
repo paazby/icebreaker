@@ -1,49 +1,73 @@
+var request = require('request');
+var url = require('url');
+var qs = require('querystring');
+
 var API_KEY = require('../lib/internal-files').API_KEY;
 var JWT_SECRET = require('../lib/internal-files').JWT_SECRET;
-var FAKE_FB_TOKEN = require('../lib/internal-files').FAKE_FB_TOKEN;
+var FAKE_FB_ID = require('../lib/internal-files').FAKE_FB_ID;
 var jwt = require('jwt-simple');
 
-exports.makeRequest = function(message){ 
-    var request = require('request');
-    var url = require('url');
-    var qs = require('querystring');
 
-    var fbWebToken = jwt.encode({
-      fb_token: FAKE_FB_TOKEN
-      }, JWT_SECRET);
+var makeAuthenticationString = function(){
+  var jwtWebToken = jwt.encode({
+    fb_id: FAKE_FB_ID
+    }, JWT_SECRET);
     
-    var apiWebToken = jwt.encode({
-      api_key: API_KEY 
+  var apiWebToken = jwt.encode({
+    apiKey: API_KEY 
     }, JWT_SECRET);
 
-    var keyAndToken = qs.stringify({
-      api_key: apiWebToken,
-      token: fbWebToken
-    });
+  var keyAndToken = qs.stringify({
+    apiKey: apiWebToken,
+    token: jwtWebToken
+  });
+  
+  return keyAndToken;
+};
 
+var makeAuthenticationObject = function(){
+  var jwtWebToken = jwt.encode({
+    fb_id: FAKE_FB_ID
+    }, JWT_SECRET);
+    
+  var apiWebToken = jwt.encode({
+    apiKey: API_KEY 
+    }, JWT_SECRET);
+
+  var authenticationObject = {
+    apiKey: apiWebToken,
+    token: jwtWebToken
+  };
+  
+  return authenticationObject;
+};
+
+var makeRequest = function(path){ 
+  
     var options = { 
       protocol: 'http',
-      host:'zavadil7.cloudapp.net', 
-      pathname: '/matches',
-      search: keyAndToken,
+      host: process.env.CURRENT_HOST, 
+      pathname: path,
+      query: makeAuthenticationObject(),
       method:'GET'
     };
 
     var testUrl = url.format(options);
     console.log('testUrl', testUrl);    
 
-    var request = request(testUrl, function(response){ 
-      console.log(response.statusCode);
-      response.on('data', function(data){ 
-        console.log('data', data); 
-      }); 
-    }); 
-
-    request.on('error', function(e){
-      console.log('error', e);
+    request(testUrl, function(error, response, body){ 
+      if(!error && response.statusCode === 200){
+        console.log(body);
+      } else {
+        console.log('Error:', error);
+      }
     });
-    request.write(message); 
-    request.end();
 };
 
-exports.makeRequest('_notUsed');
+
+var runHttpClient = function(){
+  var path = process.argv[2] || '/matches';
+  makeRequest(path);
+};
+
+runHttpClient();
