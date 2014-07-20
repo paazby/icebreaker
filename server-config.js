@@ -4,6 +4,9 @@ var util = require('./lib/utility');
 var passport = require('./lib/auth').passport;
 var iceAuthenticated = require('./lib/icebreaker-auth').iceAuthenticated;
 var serverUtil = require ('./lib/server-utils.js');
+var jwt = require('jwt-simple');
+var JWT_SECRET = require('./lib/internal-files').JWT_SECRET;
+var makeUrlSuffix = require('./lib/makeUrlSuffix');
 
 var handler = require('./lib/request-handler');
 
@@ -18,14 +21,6 @@ app.configure(function() {
 
 
 // Passport session setup.
-//   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session.  Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing.  However, since this example does not
-//   have a database of user records, the complete Facebook profile is serialized
-//   and deserialized.
-
-
 
 app.get('/auth/facebook',
   passport.authenticate('facebook'),
@@ -34,22 +29,21 @@ app.get('/auth/facebook',
     // function will not be called.
 });
 
+// https://github.com/jaredhanson/passport-http-bearer ({session:false}) example
 app.get('/auth/facebook/callback', 
-  passport.authenticate('facebook', { failureRedirect: '/' }),
+  passport.authenticate('facebook', { session: false, failureRedirect: '/' }),
   function(req, res) {
-    res.redirect('/');
+    var urlSuffix = makeUrlSuffix.makeUrlSuffix(req);
+    res.redirect('/linden/passman/dustytoken/'+urlSuffix);
   });
 
 
 app.get('/',  handler.renderIndex);
+app.get('/allcandidates', iceAuthenticated, handler.serveCandidates);
 app.get('/matches', iceAuthenticated, handler.serveMatches);
 app.post('/matches', iceAuthenticated, handler.postMatches);
 
 
-app.get('/logout', handler.logoutUser);
-
-app.get('/signup', handler.signupUserForm);
-app.post('/signup', handler.signupUser);
 
 app.get('/*', serverUtil.send404);
 

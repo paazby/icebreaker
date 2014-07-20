@@ -5,7 +5,7 @@ var app = require('../server-config.js');
 
 var db = require('../app/config');
 var User = require('../app/models/user');
-var Link = require('../app/models/link');
+var Match = require('../app/models/match');
 
 /////////////////////////////////////////////////////
 // NOTE: these tests are designed for mongo!
@@ -16,30 +16,41 @@ xdescribe('', function() {
   beforeEach(function(done) {
     // Log out currently signed in user
     request(app)
-      .get('/logout')
       .end(function(err, res) {
 
         // Delete objects from db so they can be created later for the test
-        Link.remove({url : 'http://www.roflzoo.com/'}).exec();
-        User.remove({username : 'Savannah'}).exec();
-        User.remove({username : 'Phillip'}).exec();
-
+        Match.remove({user_0_id : 'http://www.roflzoo.com/'}).exec();
+        User.remove({username : 'Pierre Laplace'}).exec();
+        User.remove({username : 'Alan Turing'}).exec();
         done();
       });
   });
 
   describe('Link creation: ', function() {
 
-    it('Only shortens valid urls, returning a 404 - Not found for invalid urls', function(done) {
+   it('if an api key isnt present it immediately returns 404. All routes except
+      the login route. We dont provide a descriptive error message which could
+      disclose information to an attacker', function(done) {
       request(app)
-        .post('/links')
+        .get('/matches')
+        .expect(404)
+        .end(done);
+    });
+      
+   it('if an api key isnt present it immediately returns 404. All routes except
+      the login route. We dont provide a descriptive error message which could
+      disclose information to an attacker', function(done) {
+      request(app)
+        .post('/matches')
         .send({
-          'url': 'definitely not a valid url'})
+	  'user_0_id':'10152116690182396'
+        })
         .expect(404)
         .end(done);
     });
 
-    describe('Shortening links:', function() {
+
+    Describe('Shortening links:', function() {
 
       it('Responds with the short code', function(done) {
         request(app)

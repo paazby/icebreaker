@@ -7,11 +7,9 @@
   "license": "Proprietary",
   "private": true,
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
     "bluebird": "1.0.8",
     "bookshelf": "~0.6.4",
     "chai": "^1.9.0",
-    "ejs": "~0.8.5",
     "express": "~3.4.8",
     "express-partials": "~0.2.0",
     "forever": "^0.10.11",
@@ -34,6 +32,7 @@
     "sqlite3": "~2.2.0"
   },
   "devDependencies": {
+    "request": "^2.37.0",
     "supertest": "^0.10.0"
   }
 }
