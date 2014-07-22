@@ -42,3 +42,5 @@ lib/.#*
 *~
 db/.#*
 db/shortly.sqlite
+test/*#
+*#

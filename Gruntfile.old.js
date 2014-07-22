@@ -1,26 +1,17 @@
-// Grunt has 3 components
-// 1. load plugins: looks exactly like require
-// 2. configure plugins
-// 3. configure tasks you're going to invoke on the comman line
-// 
-// configure plugins is always the same format
-// plugin: {
-//   options: {
-//     xx: xx
-//   }, 
-//   subtasks: {
-//     xx: xx
-//   }
-// 
-// subtasks: every grunt file has a default behaviour, subtasks
-//           allow you to define behaviour other than default
-
-
 module.exports = function(grunt) {
-   
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
- 
+    concat: {
+      prod: {
+        src:[
+          'public/lib/**/*.js',
+          'public/client/*.js'
+        ],
+        dest: 'public/dist/minified.js'
+      }
+    },
+
     mochaTest: {
       test: {
         options: {
@@ -35,23 +26,50 @@ module.exports = function(grunt) {
         script: 'server.js'
       }
     },
- 
-   jshint: {
+
+    uglify: {
+      prod:{
+        files:{
+          'public/dist/miniugly.js': 'public/dist/minified.js',
+        }
+      }
+    },
+
+    jshint: {
       files: [
         // Add filespec list here
       ],
       options: {
         force: 'true',
-        jshintrc: '.jshintrc'
+        jshintrc: '.jshintrc',
+        ignores: [
+          'public/lib/**/*.js',
+          'public/dist/**/*.js'
+        ]
+      }
+    },
+
+    cssmin: {
+      prod:{
+        src: ['public/style.css'],
+        dest:'public/dist/style.min.css'
       }
     },
 
     watch: {
       scripts: {
         files: [
-          'lib/*.js',
-          '*.js'
+          'public/client/**/*.js',
+          'public/lib/**/*.js',
+        ],
+        tasks: [
+          'concat',
+          'uglify'
         ]
+      },
+      css: {
+        files: 'public/*.css',
+        tasks: ['cssmin']
       }
     },
 
@@ -62,7 +80,6 @@ module.exports = function(grunt) {
     },
   });
 
-  // Exactly like require
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -105,7 +122,8 @@ module.exports = function(grunt) {
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       // add your production server task here
-     } else {
+      grunt.task.run(['shell']);
+    } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });

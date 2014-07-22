@@ -1,56 +1,99 @@
 var request = require('supertest');
 var express = require('express');
 var expect = require('chai').expect;
+var httpRequest = require('request');
+
+var makeApiKey = require('./makeApiKey');
+var makeAuthObject = require('./makeAuthObject');
+var makeAuthString = require('./makeAuthString');
 var app = require('../server-config.js');
 
 var db = require('../app/config');
 var User = require('../app/models/user');
 var Match = require('../app/models/match');
+var Users = require('../app/collections/users');
+
+var API_KEY = require('../lib/internal-files').API_KEY; 
+var JWT_SECRET = require('../lib/internal-files').JWT_SECRET;
+var FAKE_FB_ID = require('../lib/internal-files').FAKE_FB_ID; 
+
 
 /////////////////////////////////////////////////////
 // NOTE: these tests are designed for mongo!
 /////////////////////////////////////////////////////
 
-xdescribe('', function() {
+describe('', function() {
 
-  beforeEach(function(done) {
-    // Log out currently signed in user
-    request(app)
-      .end(function(err, res) {
-
-        // Delete objects from db so they can be created later for the test
-        Match.remove({user_0_id : 'http://www.roflzoo.com/'}).exec();
-        User.remove({username : 'Pierre Laplace'}).exec();
-        User.remove({username : 'Alan Turing'}).exec();
-        done();
-      });
-  });
-
-  describe('Link creation: ', function() {
-
-   it('if an api key isnt present it immediately returns 404. All routes except
-      the login route. We dont provide a descriptive error message which could
-      disclose information to an attacker', function(done) {
+  
+  describe('Authentication: ', function() {
+    xit('if an api key isnt present it immediately returns 404', function(done) {
       request(app)
         .get('/matches')
         .expect(404)
         .end(done);
-    });
+      });
       
-   it('if an api key isnt present it immediately returns 404. All routes except
-      the login route. We dont provide a descriptive error message which could
-      disclose information to an attacker', function(done) {
+    xit('if an api key isnt present POST to /matches should 404', function(done) {
       request(app)
         .post('/matches')
         .send({
-	  'user_0_id':'10152116690182396'
+	  'user_0_id':'1'
         })
         .expect(404)
         .end(done);
     });
 
+    xit('if an api key isnt present GET to /allcandidates should 404', function(done) {
+      request(app)
+        .get('/allcandidates')
+        .expect(404)
+        .end(done);
+    });
+  
+    xit('if a valid token isnt present GET to /matches should 404', function(done) {
+      request(app)
+        .get('/matches' + makeApiKey.makeApiKey())
+        .expect(404)
+        .end(done);
+    });
+ 
+    xit('if a valid token isnt present GET to /matches should 404', function(done) {
+      request(app)
+        .post('/matches' + makeApiKey.makeApiKey())
+        .expect(404)
+        .end(done);
+    });
 
-    Describe('Shortening links:', function() {
+    xit('if a valid API key and token are present GET to /matches should return 200', function(done) {
+      request(app)
+        .get('/matches' + makeAuthString.makeAuthString(FAKE_FB_ID))
+        .expect(200)
+        .end(done);
+    });
+    
+    it('if a valid API key and token are present POST to /matches should return 200', function(done) {
+      request(app)
+        .post('/matches' + makeAuthString.makeAuthString(FAKE_FB_ID))
+        .expect(200)
+        .end(done);
+    });
+
+    it('if a valid API key and token are present GET to /allcandidates should return 200', function(done) {
+      request(app)
+        .post('/allcandidates' + makeAuthString.makeAuthString(FAKE_FB_ID))
+        .expect(200)
+        .end(done);
+    });
+
+
+   }); // checks for API key   
+
+
+
+
+});
+/*
+  describe('Shortening links:', function() {
 
       it('Responds with the short code', function(done) {
         request(app)
@@ -146,7 +189,7 @@ xdescribe('', function() {
 
   describe('Priviledged Access:', function(){
 
-    // /*  Authentication  */
+    // /*  Authentication  
     // // TODO: xit out authentication
     it('Redirects to login page if a user tries to access the main page and is not signed in', function(done) {
       request(app)
@@ -256,3 +299,4 @@ xdescribe('', function() {
   }); // Account Login
 
 });
+*/
