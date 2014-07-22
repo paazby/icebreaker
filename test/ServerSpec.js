@@ -6,6 +6,7 @@ var httpRequest = require('request');
 var makeApiKey = require('./makeApiKey');
 var makeAuthObject = require('./makeAuthObject');
 var makeAuthString = require('./makeAuthString');
+var makeAugmentedAuthString = require('./makeAugmentedAuthString');
 var app = require('../server-config.js');
 
 var db = require('../app/config');
@@ -26,14 +27,14 @@ describe('', function() {
 
   
   describe('Authentication: ', function() {
-    xit('if an api key isnt present it immediately returns 404', function(done) {
+    it('if an api key isnt present it immediately returns 404', function(done) {
       request(app)
         .get('/matches')
         .expect(404)
         .end(done);
       });
       
-    xit('if an api key isnt present POST to /matches should 404', function(done) {
+    it('if an api key isnt present POST to /matches should 404', function(done) {
       request(app)
         .post('/matches')
         .send({
@@ -43,28 +44,28 @@ describe('', function() {
         .end(done);
     });
 
-    xit('if an api key isnt present GET to /allcandidates should 404', function(done) {
+    it('if an api key isnt present GET to /allcandidates should 404', function(done) {
       request(app)
         .get('/allcandidates')
         .expect(404)
         .end(done);
     });
   
-    xit('if a valid token isnt present GET to /matches should 404', function(done) {
+    it('if a valid token isnt present GET to /matches should 404', function(done) {
       request(app)
         .get('/matches' + makeApiKey.makeApiKey())
         .expect(404)
         .end(done);
     });
  
-    xit('if a valid token isnt present GET to /matches should 404', function(done) {
+    it('if a valid token isnt present GET to /matches should 404', function(done) {
       request(app)
         .post('/matches' + makeApiKey.makeApiKey())
         .expect(404)
         .end(done);
     });
 
-    xit('if a valid API key and token are present GET to /matches should return 200', function(done) {
+    it('if a valid API key and token are present GET to /matches should return 200', function(done) {
       request(app)
         .get('/matches' + makeAuthString.makeAuthString(FAKE_FB_ID))
         .expect(200)
@@ -73,14 +74,14 @@ describe('', function() {
     
     it('if a valid API key and token are present POST to /matches should return 200', function(done) {
       request(app)
-        .post('/matches' + makeAuthString.makeAuthString(FAKE_FB_ID))
+        .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
         .expect(200)
         .end(done);
     });
 
     it('if a valid API key and token are present GET to /allcandidates should return 200', function(done) {
       request(app)
-        .post('/allcandidates' + makeAuthString.makeAuthString(FAKE_FB_ID))
+        .get('/allcandidates' + makeAuthString.makeAuthString(FAKE_FB_ID))
         .expect(200)
         .end(done);
     });
