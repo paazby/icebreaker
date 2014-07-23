@@ -32,7 +32,7 @@ describe('', function() {
         .get('/matches')
         .expect(404)
         .end(done);
-      });
+    });
       
     it('if an api key isnt present POST to /matches should 404', function(done) {
       request(app)
@@ -72,7 +72,7 @@ describe('', function() {
         .end(done);
     });
     
-    it('if a valid API key and token are present POST to /matches should return 200', function(done) {
+    xit('if a valid API key and token are present POST to /matches should return 200', function(done) {
       request(app)
         .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
         .expect(200)
@@ -85,30 +85,43 @@ describe('', function() {
         .expect(200)
         .end(done);
     });
-
-
    }); // checks for API key   
 
+   describe('allcandidates', function() {
 
-
-
-});
-/*
-  describe('Shortening links:', function() {
-
-      it('Responds with the short code', function(done) {
+      it('/allcandidates responds with a collection', function(done) {
         request(app)
-          .post('/links')
-          .send({
-            'url': 'http://www.roflzoo.com/'})
+          .get('/allcandidates' + makeAuthString.makeAuthString(FAKE_FB_ID))
           .expect(200)
           .expect(function(res) {
-            expect(res.body.url).to.equal('http://www.roflzoo.com/');
-            expect(res.body.code).to.be.ok;
+            expect(Array.isArray(res.body)).to.equal(true);
           })
           .end(done);
       });
+      
+      it('/allcandidates responds with the opposite gender', function(done) {
+        request(app)
+          .get('/allcandidates' + makeAuthString.makeAuthString(FAKE_FB_ID))
+          .expect(200)
+          .expect(function(res) {
+            expect(res.body[0].is_male).to.equal(0);
+          })
+          .end(done);
+      });
+   });
 
+   describe('/matches', function(){
+     it('/matches responds with 403 if an invalid target_id is submitted', function(done){
+       request(app)
+         .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
+         .expect(403)
+         .end(done)
+     });
+   });
+
+});
+/*
+  
       it('New links create a database entry', function(done) {
         request(app)
           .post('/links')
