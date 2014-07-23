@@ -13,6 +13,7 @@ var db = require('../app/config');
 var User = require('../app/models/user');
 var Match = require('../app/models/match');
 var Users = require('../app/collections/users');
+var Matches = require('../app/collections/matches');
 
 var API_KEY = require('../lib/internal-files').API_KEY; 
 var JWT_SECRET = require('../lib/internal-files').JWT_SECRET;
@@ -87,7 +88,7 @@ describe('', function() {
     });
    }); // checks for API key   
 
-   describe('allcandidates', function() {
+   describe('API /allcandidates:', function() {
 
       it('/allcandidates responds with a collection', function(done) {
         request(app)
@@ -110,14 +111,40 @@ describe('', function() {
       });
    });
 
-   describe('/matches', function(){
-     it('/matches responds with 403 if an invalid target_id is submitted', function(done){
+   describe('API /matches:', function(){
+     it('POST /matches responds with 403 if an invalid target_id is submitted', function(done){
        request(app)
-         .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
+         .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,-1))
          .expect(403)
          .end(done)
      });
-   });
+  
+     it('POST /matches responds with 200 if a valid target_id is submitted', function(done){
+       request(app)
+         .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
+         .expect(200)
+         .end(done)
+     });
+  });
+  describe('API /matches, matching functionality:', function(){
+    beforeEach(function(done) {
+     
+      request(app)
+        .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
+        .end(done);
+    });
+    
+
+    it('GET /matches responds with match if a valid match is submitted', function(done){
+      request(app)
+        .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(3,FAKE_FB_ID))
+        .expect(function(response){
+          expect(response.body[0].initiator_id === FAKE_FB_ID)
+          expect(response.body[0].target_id === '3')
+	})
+        .end(done)
+     });
+  });  //matching functionality
 
 });
 /*
