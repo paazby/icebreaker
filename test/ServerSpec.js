@@ -73,7 +73,7 @@ describe('', function() {
         .end(done);
     });
     
-    xit('if a valid API key and token are present POST to /matches should return 200', function(done) {
+    it('if a valid API key and token are present POST to /matches should return 200', function(done) {
       request(app)
         .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
         .expect(200)
@@ -119,7 +119,7 @@ describe('', function() {
          .end(done)
      });
   
-     xit('POST /matches responds with 200 if a valid target_id is submitted', function(done){
+     it('POST /matches responds with 200 if a valid target_id is submitted', function(done){
        request(app)
          .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
          .expect(200)
@@ -137,14 +137,12 @@ describe('', function() {
     });
     
 
-    it('GET /matches responds with match if a valid match is submitted', function(done){
+    it('GET /matches responds with error if a duplicate match is submitted', function(done){
       request(app)
-        .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(3,FAKE_FB_ID))
+        .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
         .expect(function(response){
-          console.log('test framework', response.body);
-          //expect(response.body[0].initiator_id === FAKE_FB_ID)
-          //expect(response.body[0].target_id === '3')
-	})
+          expect(response.body).to.equal( "Error: already exists")
+  	})
         .end(done)
      });
   });  //matching functionality
