@@ -128,9 +128,11 @@ describe('', function() {
   });
   describe('API /matches, matching functionality:', function(){
     beforeEach(function(done) {
-     
       request(app)
         .post('/matches' + makeAugmentedAuthString.makeAugmentedAuthString(FAKE_FB_ID,3))
+        .expect(function(response){
+          //console.log('response body', response.body);
+        })
         .end(done);
     });
     
