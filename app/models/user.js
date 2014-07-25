@@ -5,7 +5,7 @@ var Match = require('./match');
 var User = db.Model.extend({
   tableName: 'users',
   matches: function(){
-    return this.belongsToMany(Match)
+    return this.hasMany(User).through(Match);
   },
   hasTimestamps: true
 });
