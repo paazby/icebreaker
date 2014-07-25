@@ -11,6 +11,8 @@ var userHandler = require('./lib/user-handler');
 var handler = require('./lib/request-handler');
 
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.configure(function() {
   app.use(partials());
@@ -47,6 +49,25 @@ app.get('/currentuser', iceAuthenticated, userHandler.serveUser);
 
 app.get('/*', serverUtil.send404);
 
+io.on('connection', function(socket){
+    
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+  socket.on('chat message', function(msg){
+ 
+    console.log(msg);
+    
+    io.to(msg.to).emit('chat message', {msg: msg.msg, from: msg.from});
+  });
+
+  socket.on('join', function (data) {
+    console.log('this user joined', data.user);
+    socket.join(data.user); // We are using room of socket io
+  });
+
+});
 
 
-module.exports = app;
+module.exports.app = app;
+module.exports.http = http;
