@@ -66,6 +66,13 @@ describe('', function() {
         .end(done);
     });
 
+    it('if a valid token isnt present GET to /currentuser should 404', function(done) {
+      request(app)
+        .post('/currentuser' + makeApiKey.makeApiKey())
+        .expect(404)
+        .end(done);
+    });
+  
     it('if a valid API key and token are present GET to /matches should return 200', function(done) {
       request(app)
         .get('/matches' + makeAuthString.makeAuthString(FAKE_FB_ID))
@@ -83,6 +90,13 @@ describe('', function() {
     it('if a valid API key and token are present GET to /allcandidates should return 200', function(done) {
       request(app)
         .get('/allcandidates' + makeAuthString.makeAuthString(FAKE_FB_ID))
+        .expect(200)
+        .end(done);
+    });
+    
+    it('if a valid API key and token are present GET to /currentuser should return 200', function(done) {
+      request(app)
+        .get('/currentuser' + makeAuthString.makeAuthString(FAKE_FB_ID))
         .expect(200)
         .end(done);
     });

@@ -7,7 +7,7 @@ var serverUtil = require ('./lib/server-utils.js');
 var jwt = require('jwt-simple');
 var JWT_SECRET = require('./lib/internal-files').JWT_SECRET;
 var makeUrlSuffix = require('./lib/makeUrlSuffix');
-
+var userHandler = require('./lib/user-handler');
 var handler = require('./lib/request-handler');
 
 var app = express();
@@ -42,7 +42,7 @@ app.get('/',  handler.renderIndex);
 app.get('/allcandidates', iceAuthenticated, handler.serveCandidates);
 app.get('/matches', iceAuthenticated, handler.serveMatches);
 app.post('/matches', iceAuthenticated, handler.postMatches);
-
+app.get('/currentuser', iceAuthenticated, userHandler.serveUser);
 
 
 app.get('/*', serverUtil.send404);
