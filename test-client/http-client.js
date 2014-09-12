@@ -10,7 +10,7 @@ var jwt = require('jwt-simple');
 
 var makeAuthenticationString = function(){
   var jwtWebToken = jwt.encode({
-    fb_id: FAKE_FB_ID
+    fb_id: 3
     }, JWT_SECRET);
     
   var apiWebToken = jwt.encode({
@@ -42,14 +42,24 @@ var makeAuthenticationObject = function(){
   return authenticationObject;
 };
 
-var makeRequest = function(path){ 
-  
+var addQuery = function(queryObject, targetId){
+  if(targetId){
+    queryObject.target_id = targetId;
+    return queryObject;
+  }
+  return queryObject;
+}
+
+var makeGetRequest = function(path){ 
+    
+    var host = process.env.CURRENT_HOST || 'dev-ice.cloudapp.net';
+
+
     var options = { 
       protocol: 'http',
-      host: process.env.CURRENT_HOST, 
+      host: host, 
       pathname: path,
-      query: makeAuthenticationObject(),
-      method:'GET'
+      query: addQuery(makeAuthenticationObject(),1)
     };
 
     var testUrl = url.format(options);
@@ -65,9 +75,42 @@ var makeRequest = function(path){
 };
 
 
-var runHttpClient = function(){
-  var path = process.argv[2] || '/matches';
-  makeRequest(path);
+var makePostRequest = function(path){ 
+    
+    var host = process.env.CURRENT_HOST || 'dev-ice.cloudapp.net';
+    var augmentedQuery = addQuery(makeAuthenticationObject(), 1);
+    console.log('aq', augmentedQuery);
+
+    var options = { 
+      protocol: 'http',
+      host: host, 
+      pathname: path,
+      query: augmentedQuery
+    };
+
+    var testUrl = url.format(options);
+    console.log('testUrl', testUrl);    
+
+    request.post(testUrl, function(error, response, body){ 
+      if(!error && response.statusCode === 200){
+        console.log(body);
+      } else {
+        console.log('Error:', error);
+      }
+    });
 };
 
-runHttpClient();
+
+
+var runHttpClient = function(){
+  var path = process.argv[2] || '/matches';
+  var httpType = process.argv[3] || 'g';
+  if( httpType === 'g'){
+    makeGetRequest(path);
+  } else if( httpType === 'p'){
+    makePostRequest(path);
+  }
+};
+
+//runHttpClient();
+exports.makeAuthenticationString = makeAuthenticationString;

@@ -1,7 +1,7 @@
 {
-  "name": "shortly-express",
+  "name": "icebraker",
   "version": "0.0.1",
-  "description": "shortly using express",
+  "description": "icebreaker backend",
   "main": "server.js",
   "repository": "",
   "license": "Proprietary",

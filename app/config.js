@@ -7,9 +7,9 @@ var db = Bookshelf.initialize({
     host: process.env.IP || '127.0.0.1',
     user: 'your_database_user',
     password: process.env.DB_PASSWORD || 'password',
-    database: process.env.DB_NAME || 'shortlydb',
+    database: process.env.DB_NAME || 'icedb',
     charset: 'utf8',
-    filename: path.join(__dirname, '../db/shortly.sqlite')
+    filename: path.join(__dirname, '../db/ice.sqlite')
   }
 });
 
