@@ -6,7 +6,7 @@ var Match = db.Model.extend({
   tableName: 'matches',
   hasTimestamps: true,
   users: function(){
-    return this.belongsToMany(User);
+    return this.belongsToMany(User, 'matches', 'fb_id', 'user_0_id');
   },
   initialize: function(){
     //any initialize code goes here

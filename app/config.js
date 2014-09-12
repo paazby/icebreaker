@@ -23,9 +23,9 @@ db.knex.schema.hasTable('matches').then(function(exists){
   if(!exists){
     db.knex.schema.createTable('matches', function(match){
       match.increments('id').primary();
-      match.string('user_0_id', 255);
-      match.string('user_1_id', 255);
-      match.integer('count');
+      match.string('initiator_id', 255);
+      match.string('target_id', 255);
+      match.boolean('matched');
       match.timestamps();
     }).then(function(table){
       console.log('Created Table', table);

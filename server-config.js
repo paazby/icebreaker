@@ -7,10 +7,12 @@ var serverUtil = require ('./lib/server-utils.js');
 var jwt = require('jwt-simple');
 var JWT_SECRET = require('./lib/internal-files').JWT_SECRET;
 var makeUrlSuffix = require('./lib/makeUrlSuffix');
-
+var userHandler = require('./lib/user-handler');
 var handler = require('./lib/request-handler');
 
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.configure(function() {
   app.use(partials());
@@ -42,11 +44,30 @@ app.get('/',  handler.renderIndex);
 app.get('/allcandidates', iceAuthenticated, handler.serveCandidates);
 app.get('/matches', iceAuthenticated, handler.serveMatches);
 app.post('/matches', iceAuthenticated, handler.postMatches);
-
+app.get('/currentuser', iceAuthenticated, userHandler.serveUser);
 
 
 app.get('/*', serverUtil.send404);
 
+io.on('connection', function(socket){
+    
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+  socket.on('chat message', function(msg){
+ 
+    console.log(msg);
+    
+    io.to(msg.to).emit('chat message', {msg: msg.msg, from: msg.from});
+  });
+
+  socket.on('join', function (data) {
+    console.log('this user joined', data.user);
+    socket.join(data.user); // We are using room of socket io
+  });
+
+});
 
 
-module.exports = app;
+module.exports.app = app;
+module.exports.http = http;

@@ -41,7 +41,7 @@ def createData():
       is_male = random.randint(0,1)
       first_name = ''      
       
-      if is_male == 0:
+      if is_male == 1:
         randomIndex0 = random.randint(0, len(male_names))
         first_name = male_names[randomIndex0]
       else:
